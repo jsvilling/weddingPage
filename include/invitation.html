@@ -3,28 +3,24 @@
 	<p>Bis zum <b>31. Mai 2018</b> kannst du hier deine Einladung zur Hochzeit beantworten. Wenn du die Einladung für mehrere Personen beantwortest gib im Nachrichtenfeld die Namen aller weiteren Personen mit an. (Bitte nur eingeladene Gäste.)</p>
 	<form method="post">
 		<div class="field">
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name" />
+			<input type="text" name="name" id="name" placeholder="Vorname & Nachname" required/>
 		</div>
 		<div class="field">
-			<label for="email">Email</label>
-			<input type="text" name="email" id="email" />
+			<input type="text" name="number" id="number" placeholder="Anzahl Personen" required/>
 		</div>
 		<div class="field">
-			<label for="number">Anzahl Personen</label>
-			<input type="text" name="number" id="number" />
+			<input type="text" name="email" id="email" placeholder="Email Adresse" required/>
 		</div>
 		<div class="field">
 			<fieldset>
-				<input type="radio" id="yes" name="answer" value="yes">
+				<input type="radio" id="yes" name="answer" value="yes" required>
 				<label for="yes"> Ja, ich nehme teil.</label> 
-				<input type="radio" id="no" name="answer" value="no">
+				<input type="radio" id="no" name="answer" value="no" required>
 				<label for="no"> Nein, ich nehme nicht teil.</label>
 			</fieldset>
 		</div>
 		<div class="field">
-			<label for="message">Nachricht</label>
-			<textarea style="resize:none; overflow: hidden;" name="message" id="message" rows="4"></textarea>
+			<textarea style="resize:none; overflow: hidden;" name="message" id="message" rows="4" placeholder="Nachricht / Anmerkungen"></textarea>
 		</div>
 		<ul class="actions">
 			<li><input type="submit" action="" value="Antwort senden" name="submit" class="special" /></li>
