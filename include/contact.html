@@ -1,18 +1,27 @@
 <article id="contact">
 	<h2 class="major">Kontakt</h2>
-	<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
-	<p>Wenn ihr noch Fragen zur Hochzeit habt dürft ihr euch gerne bei unseren Trauzeugen melden. 
-	<div class="full">
-		<div class="left">
-			<a href="mailto:maidofhonor@chantal-joshua.ch">
-				<h3><i class="icon fa-envelope"/>  Tamara</h3>
-				 
-			</a>
+	<p>Wenn ihr noch Fragen zur Hochzeit habt dürft ihr die gerne hier stellen oder euch direkt bei unseren Trauzeugen melden. 
+	<form method="post">
+		<input id="receiver" name="receiver" type="hidden" value="brideandgroom@chantal-joshua.ch">
+			<div class="select-wrapper field">
+				<select name="receiver" id="receiver">
+					<option class="select-placeholder" value="">Empfänger</option>
+					<option value="maidofhonor@chantal-joshua.ch">Tamara</option>
+					<option value="bestman@chantal-joshua.ch">Manuel</option>
+				</select>
+			</div>
+		<div class="field">
+			<input type="text" name="name" id="name" placeholder="Name" required/>
 		</div>
-		<div class="right">
-			<a href="mailto:bestman@chantal-joshua.ch">
-				<h3><i class="icon fa-envelope"/>  Manuel</h3>
-			</a>
+		<div class="field">
+			<input type="text" name="email" id="email" placeholder="Email Adresse" required/>
 		</div>
-	</div>
+		<div class="field">
+			<textarea style="resize:none; overflow: hidden;" name="message" id="message" rows="4" placeholder="Nachricht / Anmerkungen"></textarea>
+		</div>
+		<ul class="actions">
+			<li><input type="submit" action="" value="Antwort senden" name="submit" class="special" /></li>
+			<li><input type="reset" value="Zurücksetzen" /></li>
+		</ul>
+	</form>
 </article>
