@@ -14,7 +14,7 @@ if(isset($_POST['submit'])){
     
 	mail($to,$subject,$message,$headers);
 	
-	header('location: index.php');
+	header('location: .#');
 }
 ?>
 
