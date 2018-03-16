@@ -2,7 +2,7 @@
 // yes, this is php - I'd rather it wasn't but it had to be quick.
 
 if(isset($_POST['submit'])){
-    $to = "jsvilling@gmail.com"; 
+    $to = $_POST['receiver']; 
     $from = $_POST['email'];
     $name = $_POST['name'];
 	$answer = $_POST['answer'];
