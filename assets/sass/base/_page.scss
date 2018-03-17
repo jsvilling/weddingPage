@@ -33,3 +33,20 @@
 			}
 
 	}
+	
+	.right {
+		width: 50%;
+		float: right;
+		text-align: center;
+	}
+	.left {
+		width: 50%;
+		float: left;
+		text-align: center;
+	}
+	.full {
+		text-align: center;
+		float: none;
+		clear: both;
+		width: 100%;
+	}
