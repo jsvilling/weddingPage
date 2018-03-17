@@ -7,11 +7,16 @@ if(isset($_POST['submit'])){
     $name = $_POST['name'];
 	$answer = $_POST['answer'];
 	$number = $_POST['number'];
-    $subject = "Einladung";
-    $message =  "Name: \t\t" . $name . " \n\n Antwort: \t\t" . $_POST['answer'] . "\n\n Anzahl: \t\t" . $number . "\n\n Nachricht: \t\t" . $_POST['message'];
-
+    $subject = "Hochzeit Chantal und Joshua";
+	$message = $_POST['message'];
     $headers = "From:" . $from;
-    
+
+	if ($answer != null && strlen($answer) > 0) {
+		$message =  " Name: " . $name . " \n\n Antwort: " . $answer . "\n\n Anzahl: " . $number . "\n\n Nachricht: " . $message;
+	} else {
+		$message =  " Name: " . $name . "\n\n Nachricht: " . $message;
+	}
+	
 	mail($to,$subject,$message,$headers);
 	
 	header('location: .#');
