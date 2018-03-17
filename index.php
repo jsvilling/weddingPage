@@ -63,7 +63,7 @@ if(isset($_POST['submit'])){
 		<div id="bg"></div>
 
 		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
+		<script src="node_modules/jquery/dist/jquery.min.js"></script>
 		<script src="assets/js/skel.min.js"></script>
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
