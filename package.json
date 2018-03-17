@@ -18,5 +18,8 @@
   "homepage": "https://github.com/jsvilling/weddingPage#readme",
   "dependencies": {
     "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "sass": "^1.0.0-rc.1"
   }
 }
