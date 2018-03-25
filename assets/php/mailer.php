@@ -1,9 +1,7 @@
 <?php 
-// yes, this is php - I'd rather it wasn't but it had to be quick.
-
 if(isset($_POST['submit'])){
 	try {
-		$redirectTarget = 'location: .#thankyou';
+		$redirectTarget = 'location: ../..#thankyou';
 		$to = $_POST['receiver']; 
 		$from = $_POST['email'];
 		$name = $_POST['name'];
@@ -19,7 +17,7 @@ if(isset($_POST['submit'])){
 		}
 		mail($to,$subject,$message,$headers);
 	} catch (Exception $e) {
-		$redirectTarget = 'location: .#opps';
+		$redirectTarget = 'location: ../..#opps';
 	}
 	header($redirectTarget);
 }
