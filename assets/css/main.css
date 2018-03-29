@@ -92,11 +92,11 @@
 /* Type */
 
 	html {
-		font-size: 16pt;
+		font-size: 14pt;
 	}
 	
 	.small {
-		font-size: 13pt;
+		font-size: 11pt;
 	}
 
 		@media screen and (max-width: 1680px) {
