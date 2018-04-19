@@ -23,8 +23,6 @@
 		var	$header = $('#header');
 		var	$footer = $('#footer');
 		var	$main = $('#main');
-		var easterEggTrigger=0;
-		var	$main_articles = $main.children('article');
 
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
