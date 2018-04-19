@@ -11,7 +11,7 @@
 		large:		'(max-width: 1280px)',
 		medium:		'(max-width: 980px)',
 		small:		'(max-width: 736px)',
-		xsmall:		'(max-width: 480px)',
+		xsmall:		'(max-width: 630)',
 		xxsmall:	'(max-width: 360px)'
 	});
 
