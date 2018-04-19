@@ -23,7 +23,6 @@
 		var	$header = $('#header');
 		var	$footer = $('#footer');
 		var	$main = $('#main');
-		var $logo = $('#logo');
 		var easterEggTrigger=0;
 		var	$main_articles = $main.children('article');
 
@@ -184,12 +183,6 @@
 			}
 		});
 		
-		$logo.on('click', function() {
-			if (++easterEggTrigger >= 3) {
-				location.hash = "keks";
-			}
-		});
-
 		$window.on('keyup', function(event) {
 			if(event.keyCode === 27 && $body.hasClass('is-article-visible')) {
 				$main._hide(true);
