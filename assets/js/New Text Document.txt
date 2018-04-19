@@ -1,0 +1,10 @@
+(function($) {
+	var easterEggTrigger = 0;
+	var $logo = $('#logo');
+	var	$main = $('#main');
+	var userDeservsCookie = false;
+
+	$main.on("viewLoaded", function(event) {
+		console.log("give that man a cookie");
+	});
+})(jQuery);
