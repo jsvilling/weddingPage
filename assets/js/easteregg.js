@@ -22,5 +22,6 @@
             $('#message').val(newMessage);
         }
         console.log($('#message').val());
+        return true;
     });
 })(jQuery);
