@@ -23,8 +23,6 @@
 		var	$header = $('#header');
 		var	$footer = $('#footer');
 		var	$main = $('#main');
-		var easterEggTrigger=0;
-		var	$main_articles = $main.children('article');
 
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
@@ -248,9 +246,6 @@
 
 			// Mark as visible.
 			$('body').addClass('is-article-visible');
-
-			// Deactivate all articles (just in case one's already active).
-			$main_articles.removeClass('active');
 
 			$('#header').hide();
 			$('#footer').hide();
