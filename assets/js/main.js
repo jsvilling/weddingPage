@@ -23,7 +23,11 @@
 		var	$header = $('#header');
 		var	$footer = $('#footer');
 		var	$main = $('#main');
+		var $logo = $('#logo');
+		var easterEggTrigger=0;
 		var	$main_articles = $main.children('article');
+		
+		console.log($logo);
 
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
@@ -179,6 +183,13 @@
 		$body.on('click', function(event) {
 			if ($body.hasClass('is-article-visible')) {
 				$main._hide(true);
+			}
+		});
+		
+		$logo.on('click', function() {
+			if (++easterEggTrigger >= 3)
+			{
+				console.log("triggered");
 			}
 		});
 
