@@ -26,8 +26,6 @@
 		var $logo = $('#logo');
 		var easterEggTrigger=0;
 		var	$main_articles = $main.children('article');
-		
-		console.log($logo);
 
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
@@ -187,9 +185,8 @@
 		});
 		
 		$logo.on('click', function() {
-			if (++easterEggTrigger >= 3)
-			{
-				console.log("triggered");
+			if (++easterEggTrigger >= 3) {
+				location.hash = "keks";
 			}
 		});
 
