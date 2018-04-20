@@ -17,8 +17,8 @@
 	$(function() {
 		var	$window = $(window);
 		var	$body = $('body');
-
-		var	$main = initMain($body);
+		var	$header = $('#header');
+		var	$main = new ViewHandler($body, $header);
 		
 		var animationHandler = new AnimationHandler($window, $body);
 
@@ -29,21 +29,19 @@
 		router.routeToInitialView();
 	});
 	
-	var initMain = function($body) {
+	var ViewHandler = function($body, $header) {
 		var	$main = $('#main');
-		var	$header = $('#header');
 		var	$footer = $('#footer');
 		var	delay = 100;
 		var locked = false;
 		
-		$main._load = function() {
+		this.load = function() {
 			var fileName = "include/" + location.hash.substr(1) + ".html";
 			$main.load(fileName, {}, function(responseText, textStatus, req) {
-				$main._show(location.hash.substr(1));
+				show(location.hash.substr(1));
 			});
-		}
-		
-		$main._show = function(id, initial) {
+		}	
+		var show = function(id, initial) {
 			var $article = $("#" + id);
 			if ($article.length == 0) {
 				return;
@@ -111,8 +109,7 @@
 					event.stopPropagation();
 				});
 			};
-
-		$main._hide = function(addState) {
+		this.hide = function(addState) {
 			var $article = $main.children('article').filter('.active');
 
 			if (!$body.hasClass('is-article-visible')) {
@@ -154,7 +151,9 @@
 
 			}, delay);
 		};
-		return $main;
+		this.hideTargetElement = function() {
+			$main.hide();
+		}
 	}
 	
 	function Router(handler, outlet) {
@@ -162,19 +161,19 @@
 		var outlet = outlet;
 		this.routeToInitialView = function() {
 			if (!isHome()) {
-				outlet._load();
+				outlet.load();
 				handler.trigger('load');
 			} else {
-				outlet.hide();
+				outlet.hideTargetElement();
 			}		
 		}
 		handler.on('hashchange', function(event) {
 			event.preventDefault();
 			event.stopPropagation();
 			if (isHome()) {
-				outlet._hide();
+				outlet.hide();
 			} else {
-				outlet._load();
+				outlet.load();
 			}
 		});
 		// Right place?
