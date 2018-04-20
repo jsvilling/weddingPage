@@ -4,17 +4,14 @@
 	var userDeservesCookie = false;
 	var $logo = $('#logo');
 	var $main = $('#main');
-	$logo.on('click', function() {
+	$logo.on('click', function(event) {
+		event.stopPropagation();
+		event.preventDefault();
 		if (++easterEggTrigger >= 3) {
 			location.hash = "keks";
 			userDeservesCookie = true;
 		}
 	});
-    $main.on('viewChanged', function() {
-        if (hashInvitation === location.hash && userDeservesCookie) {
-            console.log("you deserve that cookie");
-        }
-    });
     $(document).on('submit','#invitationForm',function(){
         if (hashInvitation === location.hash && userDeservesCookie) {
             var originalMessage = $('#message').val();
