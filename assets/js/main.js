@@ -16,13 +16,12 @@
 	});
 
 	$(function() {
-
 		var	$window = $(window);
 		var	$body = $('body');
 		var	$wrapper = $('#wrapper');
 		var	$header = $('#header');
 		var	$footer = $('#footer');
-		var	$main = $('#main');
+		var	$main = initMain($body, $header, $footer);
 
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
@@ -36,7 +35,82 @@
 		initFlexBox();
 		initNav($header);
 
-		// Main.
+		// Events.
+		$body.on('click', function(event) {
+			if ($body.hasClass('is-article-visible')) {
+				$main._hide(true);
+			}
+		});
+		
+		$window.on('keyup', function(event) {
+			if(event.keyCode === 27 && $body.hasClass('is-article-visible')) {
+				$main._hide(true);
+			}
+		});
+
+		$window.on('hashchange', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			if (location.hash == '' || location.hash == '#') {
+				$main._hide();
+			} else {
+				$main._load();
+			}
+		});
+
+		// Scroll restoration.
+		// This prevents the page from scrolling back to the top on a hashchange.
+		if ('scrollRestoration' in history) {
+			history.scrollRestoration = 'manual';
+		} else {
+			var	oldScrollPos = 0;
+			var scrollPos = 0;
+			var	$htmlbody = $('html,body');
+
+			$window
+				.on('scroll', function() {
+					oldScrollPos = scrollPos;
+					scrollPos = $htmlbody.scrollTop();
+				})
+				.on('hashchange', function() {
+					$window.scrollTop(oldScrollPos);
+				});
+			}
+			
+		// Initial article.
+		if (location.hash != '' &&	location.hash != '#') {
+			$main._load();
+			$window.trigger('load');
+		} else {
+			$main.hide();
+		}		
+	});
+	
+	var initFlexBox = function() {
+		// Fix: Placeholder polyfill.
+		$('form').placeholder();
+
+		// Fix: Flexbox min-height bug on IE.
+		if (skel.vars.IEVersion < 12) {
+			var flexboxFixTimeoutId;
+			$window.on('resize.flexbox-fix', function() {
+				clearTimeout(flexboxFixTimeoutId);
+				flexboxFixTimeoutId = setTimeout(function() {
+					if ($wrapper.prop('scrollHeight') > $window.height())
+						$wrapper.css('height', 'auto');
+					else
+						$wrapper.css('height', '100vh');
+				}, 250);
+			}).triggerHandler('resize.flexbox-fix');
+		}
+	}
+	
+	var initMain = function(body, header, footer) {
+		var	$window = $(window);
+		var $body = body;
+		var $header = header;
+		var $footer = footer;
+		var	$main = $('#main');
 		var	delay = 100;
 		var locked = false;
 		
@@ -159,75 +233,7 @@
 
 			}, delay);
 		};
-
-		// Events.
-		$body.on('click', function(event) {
-			if ($body.hasClass('is-article-visible')) {
-				$main._hide(true);
-			}
-		});
-		
-		$window.on('keyup', function(event) {
-			if(event.keyCode === 27 && $body.hasClass('is-article-visible')) {
-				$main._hide(true);
-			}
-		});
-
-		$window.on('hashchange', function(event) {
-			event.preventDefault();
-			event.stopPropagation();
-			if (location.hash == '' || location.hash == '#') {
-				$main._hide();
-			} else {
-				$main._load();
-			}
-		});
-
-		// Scroll restoration.
-		// This prevents the page from scrolling back to the top on a hashchange.
-		if ('scrollRestoration' in history) {
-			history.scrollRestoration = 'manual';
-		} else {
-			var	oldScrollPos = 0;
-			var scrollPos = 0;
-			var	$htmlbody = $('html,body');
-
-			$window
-				.on('scroll', function() {
-					oldScrollPos = scrollPos;
-					scrollPos = $htmlbody.scrollTop();
-				})
-				.on('hashchange', function() {
-					$window.scrollTop(oldScrollPos);
-				});
-			}
-			
-		// Initial article.
-		if (location.hash != '' &&	location.hash != '#') {
-			$main._load();
-			$window.trigger('load');
-		} else {
-			$main.hide();
-		}		
-	});
-	
-	var initFlexBox = function() {
-		// Fix: Placeholder polyfill.
-		$('form').placeholder();
-
-		// Fix: Flexbox min-height bug on IE.
-		if (skel.vars.IEVersion < 12) {
-			var flexboxFixTimeoutId;
-			$window.on('resize.flexbox-fix', function() {
-				clearTimeout(flexboxFixTimeoutId);
-				flexboxFixTimeoutId = setTimeout(function() {
-					if ($wrapper.prop('scrollHeight') > $window.height())
-						$wrapper.css('height', 'auto');
-					else
-						$wrapper.css('height', '100vh');
-				}, 250);
-			}).triggerHandler('resize.flexbox-fix');
-		}
+		return $main;
 	}
 	
 	var initNav = function($header) {
