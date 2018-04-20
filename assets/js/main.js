@@ -22,8 +22,39 @@
 		var	viewHandler = new ViewHandler($body, $header);		
 		var animationHandler = new AnimationHandler($window, $body);
 		var router = new Router($window, viewHandler);
+		var globalInputHandler = new GlobalInputHandler($window, router);
 		router.routeToInitialView();
 	});
+	
+	var initFlexBox = function() {
+		// Fix: Placeholder polyfill.
+		$('form').placeholder();
+
+		// Fix: Flexbox min-height bug on IE.
+		if (skel.vars.IEVersion < 12) {
+			var flexboxFixTimeoutId;
+			$window.on('resize.flexbox-fix', function() {
+				clearTimeout(flexboxFixTimeoutId);
+				flexboxFixTimeoutId = setTimeout(function() {
+					if ($wrapper.prop('scrollHeight') > $window.height())
+						$wrapper.css('height', 'auto');
+					else
+						$wrapper.css('height', '100vh');
+				}, 250);
+			}).triggerHandler('resize.flexbox-fix');
+		}
+	}
+	
+	var initHeader = function() {
+		var	$header = $('#header');
+		var $nav = $header.children('nav');
+		var	$nav_li = $nav.find('li');
+		if ($nav_li.length % 2 == 0) {
+			$nav.addClass('use-middle');
+			$nav_li.eq( ($nav_li.length / 2) ).addClass('is-middle');
+		}
+		return $header;
+	}
 	
 	var ViewHandler = function($body, $header) {
 		var	$main = $('#main');
@@ -150,42 +181,6 @@
 		}
 	}
 	
-	function Router(handler, outlet) {
-		var handler = handler
-		var outlet = outlet;
-		this.routeToInitialView = function() {
-			if (!isHome()) {
-				outlet.load();
-				handler.trigger('load');
-			} else {
-				outlet.hideTargetElement();
-			}		
-		}
-		handler.on('hashchange', function(event) {
-			event.preventDefault();
-			event.stopPropagation();
-			if (isHome()) {
-				outlet.hide();
-			} else {
-				outlet.load();
-			}
-		});
-		// Right place?
-		handler.on('click', function(event) {
-			if (!isHome()) {
-				location.hash = '';
-			}
-		});
-		handler.on('keyup', function(event) {
-			if(event.keyCode === 27 && !isHome()) {
-				location.hash = '';
-			}
-		});
-		var isHome = function() {
-			return location.hash == '' || location.hash == '#';
-		}
-	}
-	
 	function AnimationHandler(handler, target) {
 		var handler = handler;
 		var target = target;
@@ -220,36 +215,42 @@
 		init();
 	}
 
-	var initFlexBox = function() {
-		// Fix: Placeholder polyfill.
-		$('form').placeholder();
-
-		// Fix: Flexbox min-height bug on IE.
-		if (skel.vars.IEVersion < 12) {
-			var flexboxFixTimeoutId;
-			$window.on('resize.flexbox-fix', function() {
-				clearTimeout(flexboxFixTimeoutId);
-				flexboxFixTimeoutId = setTimeout(function() {
-					if ($wrapper.prop('scrollHeight') > $window.height())
-						$wrapper.css('height', 'auto');
-					else
-						$wrapper.css('height', '100vh');
-				}, 250);
-			}).triggerHandler('resize.flexbox-fix');
+	function Router(handler, outlet) {
+		var router = this;
+		var handler = handler
+		var outlet = outlet;
+		this.isHome = function() {
+			return location.hash == '' || location.hash == '#';
 		}
-	}
-	
-	var initHeader = function() {
-		var	$header = $('#header');
-		var $nav = $header.children('nav');
-		var	$nav_li = $nav.find('li');
-		if ($nav_li.length % 2 == 0) {
-			$nav.addClass('use-middle');
-			$nav_li.eq( ($nav_li.length / 2) ).addClass('is-middle');
+		this.routeToInitialView = function() {
+			if (!this.isHome()) {
+				outlet.load();
+				handler.trigger('load');
+			} else {
+				outlet.hideTargetElement();
+			}		
 		}
-		return $header;
+		handler.on('hashchange', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			if (router.isHome()) {
+				outlet.hide();
+			} else {
+				outlet.load();
+			}
+		});
 	}
-	
-	
-	
+	function GlobalInputHandler($window, router) {
+		$window.on('click', function(event) {
+			if (!router.isHome()) {
+				console.log(location.hash);
+				location.hash = '';
+			}
+		});
+		$window.on('keyup', function(event) {
+			if(event.keyCode === 27 && !router.isHome()) {
+				location.hash = '';
+			}
+		});
+	}
 })(jQuery);
