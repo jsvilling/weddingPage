@@ -15,16 +15,12 @@
 	});
 
 	$(function() {
+		initFlexBox();
 		var	$window = $(window);
 		var	$body = $('body');
-		var	$header = $('#header');
-		var	viewHandler = new ViewHandler($body, $header);
-		
+		var	$header = initHeader();
+		var	viewHandler = new ViewHandler($body, $header);		
 		var animationHandler = new AnimationHandler($window, $body);
-
-		initFlexBox();
-		initNav($header);
-
 		var router = new Router($window, viewHandler);
 		router.routeToInitialView();
 	});
@@ -33,8 +29,7 @@
 		var	$main = $('#main');
 		var	$footer = $('#footer');
 		var	delay = 100;
-		var locked = false;
-		
+		var locked = false;	
 		this.load = function() {
 			var fileName = "include/" + location.hash.substr(1) + ".html";
 			$main.load(fileName, {}, function(responseText, textStatus, req) {
@@ -46,19 +41,15 @@
 			if ($article.length == 0) {
 				return;
 			}
-			
 			locked = handleLock(locked, $article);
 			if(!locked) {
 				return;
 			}
-			
 			// Article already visible? Just swap articles.
 			if ($body.hasClass('is-article-visible')) {
-
 				// Deactivate current article.
 				var $prevArticle = $main.children('article').filter('.active');
 				$prevArticle.removeClass('active');
-
 				// Show article.
 				setTimeout(function() {
 					$prevArticle.hide();
@@ -73,24 +64,18 @@
 					}, 25);
 				}, delay);
 			} else {
-
 				// Mark as visible.
 				$body.addClass('is-article-visible');
-
 				// Show article.
 				setTimeout(function() {
-
 					$header.hide();
 					$footer.hide();
-
 					$main.show();
 					$article.show();
-
 					// Activate article.
 					setTimeout(function() {
 						$article.addClass('active');
 							$(window).scrollTop(0).triggerHandler('resize.flexbox-fix');
-
 							// Unlock.
 							setTimeout(function() {
 								locked = false;
@@ -98,7 +83,6 @@
 						}, 25);
 					}, delay);
 				}
-						
 				$('<div class="close">Close</div>')
 					.appendTo($article)
 					.on('click', function() {
@@ -111,36 +95,26 @@
 			};
 		this.hide = function(addState) {
 			var $article = $main.children('article').filter('.active');
-
 			if (!$body.hasClass('is-article-visible')) {
 				return;
 			}
-
-			// Add state?
 			if (typeof addState != 'undefined' && addState === true) {
 				history.pushState(null, null, '#');
 			}
-			
 			locked = handleLock(locked, $article);
 			if(!locked) {
 				$window.scrollTop(0).triggerHandler('resize.flexbox-fix');
 				return;
 			}
-
 			$article.removeClass('active');
-
 			// Hide article.
 			setTimeout(function() {
-
 				$article.hide();
 				$main.hide();
-
 				$footer.show();
 				$header.show();
-
 				// Unmark as visible.
 				setTimeout(function() {
-
 					$body.removeClass('is-article-visible');
 					$(window).scrollTop(0).triggerHandler('resize.flexbox-fix');
 					// Unlock.
@@ -148,7 +122,6 @@
 						locked = false;
 					}, delay);
 				}, 25);
-
 			}, delay);
 		};
 		this.hideTargetElement = function() {
@@ -159,20 +132,14 @@
 			if (locked || (typeof initial != 'undefined' && initial === true)) {
 				// Mark as switching.
 				$body.addClass('is-switching');
-
 				// Mark as visible.
 				$body.addClass('is-article-visible');
-
 				$header.hide();
 				$footer.hide();
-				
 				$main.show();
 				article.show();
-
 				article.addClass('active');
-
 				locked = false;
-
 				// Unmark as switching.
 				setTimeout(function() {
 					$body.removeClass('is-switching');
@@ -272,13 +239,15 @@
 		}
 	}
 	
-	var initNav = function($header) {
+	var initHeader = function() {
+		var	$header = $('#header');
 		var $nav = $header.children('nav');
 		var	$nav_li = $nav.find('li');
 		if ($nav_li.length % 2 == 0) {
 			$nav.addClass('use-middle');
 			$nav_li.eq( ($nav_li.length / 2) ).addClass('is-middle');
 		}
+		return $header;
 	}
 	
 	
