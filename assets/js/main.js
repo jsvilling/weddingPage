@@ -3,7 +3,6 @@
 	Edited by Joshua Villing
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-
 (function($) {
 	skel.breakpoints({
 		xlarge:		'(max-width: 1680px)',
@@ -13,7 +12,6 @@
 		xsmall:		'(max-width: 630px)',
 		xxsmall:	'(max-width: 360px)'
 	});
-
 	$(function() {
 		initFlexBox();
 		var	$window = $(window);
@@ -25,11 +23,9 @@
 		var globalInputHandler = new GlobalInputHandler($window, router);
 		router.routeToInitialView();
 	});
-	
 	var initFlexBox = function() {
 		// Fix: Placeholder polyfill.
 		$('form').placeholder();
-
 		// Fix: Flexbox min-height bug on IE.
 		if (skel.vars.IEVersion < 12) {
 			var flexboxFixTimeoutId;
@@ -44,7 +40,6 @@
 			}).triggerHandler('resize.flexbox-fix');
 		}
 	}
-	
 	var initHeader = function() {
 		var	$header = $('#header');
 		var $nav = $header.children('nav');
@@ -55,7 +50,6 @@
 		}
 		return $header;
 	}
-	
 	var ViewHandler = function($body, $header) {
 		var	$main = $('#main');
 		var	$footer = $('#footer');
@@ -119,7 +113,6 @@
 					.on('click', function() {
 						location.hash = '';
 					});
-
 				$article.on('click', function(event) {
 					event.stopPropagation();
 				});
@@ -180,7 +173,6 @@
 			return true;
 		}
 	}
-	
 	function AnimationHandler(handler, target) {
 		var handler = handler;
 		var target = target;
@@ -194,7 +186,6 @@
 				var	oldScrollPos = 0;
 				var scrollPos = 0;
 				var	$htmlbody = $('html,body');
-
 				$window.on('scroll', function() {
 					oldScrollPos = scrollPos;
 					scrollPos = $htmlbody.scrollTop();
@@ -214,7 +205,6 @@
 		}
 		init();
 	}
-
 	function Router(handler, outlet) {
 		var router = this;
 		var handler = handler
