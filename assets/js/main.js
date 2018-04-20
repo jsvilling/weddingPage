@@ -5,18 +5,16 @@
 */
 
 (function($) {
-
 	skel.breakpoints({
 		xlarge:		'(max-width: 1680px)',
 		large:		'(max-width: 1280px)',
 		medium:		'(max-width: 980px)',
 		small:		'(max-width: 736px)',
-		xsmall:		'(max-width: 630)',
+		xsmall:		'(max-width: 630px)',
 		xxsmall:	'(max-width: 360px)'
 	});
 
 	$(function() {
-
 		var	$window = $(window);
 		var	$body = $('body');
 		var	$wrapper = $('#wrapper');
@@ -26,8 +24,7 @@
 
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
-		$window.on('load', function() {
-			console.log("changi");
+		$window.on('load', function(event) {
 			setTimeout(function() {
 				$body.removeClass('is-loading');
 			}, 50);
@@ -114,11 +111,10 @@
 				$article.on('click', function(event) {
 					event.stopPropagation();
 				});
-            	$main.trigger("viewChanged");
 			};
 
 		$main._hide = function(addState) {
-			var $article =  $main.children('article').filter('.active');
+			var $article = $main.children('article').filter('.active');
 
 			if (!$body.hasClass('is-article-visible')) {
 				return;
