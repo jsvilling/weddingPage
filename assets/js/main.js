@@ -221,15 +221,16 @@
 				});
 			}
 			
-		// Hide main
-		$main.hide();
-
 		// Initial article.
 		if (location.hash != '' &&	location.hash != '#') {
 			$window.on('load', function() {
 				$main._load();
 				$main._show(location.hash.substr(1), true);
 			});
+		} else {
+			console.log("elsa");
+			// Hide main
+			$main.hide();
 		}
 	});
 	
