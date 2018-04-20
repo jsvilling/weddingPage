@@ -27,9 +27,10 @@
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
 		$window.on('load', function() {
+			console.log("changi");
 			setTimeout(function() {
 				$body.removeClass('is-loading');
-			}, 100);
+			}, 50);
 		});
 
 		// Fix: Placeholder polyfill.
@@ -52,17 +53,13 @@
 		initNav($header);
 
 		// Main.
-		var	delay = 325;
+		var	delay = 100;
 		var locked = false;
 		
 		$main._load = function() {
 			var fileName = "include/" + location.hash.substr(1) + ".html";
 			$main.load(fileName, {}, function(responseText, textStatus, req) {
-				if (textStatus === "success") {
-					$main._show(location.hash.substr(1));
-				} else {
-					location.hash = '';
-				}
+				$main._show(location.hash.substr(1));
 			});
 		}
 		
@@ -224,10 +221,10 @@
 		// Initial article.
 		if (location.hash != '' &&	location.hash != '#') {
 			$main._load();
-			$main._show(location.hash.substr(1), true);
+			$window.trigger('load');
 		} else {
 			$main.hide();
-		}
+		}		
 	});
 	
 	var initNav = function($header) {
