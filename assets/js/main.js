@@ -57,8 +57,12 @@
 		
 		$main._load = function() {
 			var fileName = "include/" + location.hash.substr(1) + ".html";
-			$main.load(fileName, function() {
-				$main._show(location.hash.substr(1));
+			$main.load(fileName, {}, function(responseText, textStatus, req) {
+				if (textStatus === "success") {
+					$main._show(location.hash.substr(1));
+				} else {
+					location.hash = '';
+				}
 			});
 		}
 		
