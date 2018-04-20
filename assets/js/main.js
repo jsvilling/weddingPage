@@ -17,24 +17,22 @@
 	$(function() {
 		var	$window = $(window);
 		var	$body = $('body');
-		var	$wrapper = $('#wrapper');
-		var	$header = $('#header');
-		var	$footer = $('#footer');
-		var	$main = $('#main');
-		
 
-		// Disable animations/transitions until the page has loaded.
-		$body.addClass('is-loading');
-		$window.on('load', function(event) {
-			setTimeout(function() {
-				$body.removeClass('is-loading');
-			}, 50);
-		});
+		var	$main = initMain($body);
+		
+		var animationHandler = new AnimationHandler($window, $body);
 
 		initFlexBox();
 		initNav($header);
 
-		// Main.
+		var router = new Router($window, $main);
+		router.routeToInitialView();
+	});
+	
+	var initMain = function($body) {
+		var	$main = $('#main');
+		var	$header = $('#header');
+		var	$footer = $('#footer');
 		var	delay = 100;
 		var locked = false;
 		
@@ -69,7 +67,7 @@
 					$article.show();
 					setTimeout(function() {
 						$article.addClass('active');
-						$window.scrollTop(0).triggerHandler('resize.flexbox-fix');
+						$(window).scrollTop(0).triggerHandler('resize.flexbox-fix');
 						// Unlock.
 						setTimeout(function() {
 							locked = false;
@@ -93,7 +91,7 @@
 					// Activate article.
 					setTimeout(function() {
 						$article.addClass('active');
-							$window.scrollTop(0).triggerHandler('resize.flexbox-fix');
+							$(window).scrollTop(0).triggerHandler('resize.flexbox-fix');
 
 							// Unlock.
 							setTimeout(function() {
@@ -147,7 +145,7 @@
 				setTimeout(function() {
 
 					$body.removeClass('is-article-visible');
-					$window.scrollTop(0).triggerHandler('resize.flexbox-fix');
+					$(window).scrollTop(0).triggerHandler('resize.flexbox-fix');
 					// Unlock.
 					setTimeout(function() {
 						locked = false;
@@ -156,29 +154,8 @@
 
 			}, delay);
 		};
-
-		// Scroll restoration.
-		// This prevents the page from scrolling back to the top on a hashchange.
-		if ('scrollRestoration' in history) {
-			history.scrollRestoration = 'manual';
-		} else {
-			var	oldScrollPos = 0;
-			var scrollPos = 0;
-			var	$htmlbody = $('html,body');
-
-			$window
-				.on('scroll', function() {
-					oldScrollPos = scrollPos;
-					scrollPos = $htmlbody.scrollTop();
-				})
-				.on('hashchange', function() {
-					$window.scrollTop(oldScrollPos);
-				});
-			}
-		
-		var router = new Router($window, $main);
-		router.routeToInitialView();
-	});
+		return $main;
+	}
 	
 	function Router(handler, outlet) {
 		var handler = handler
@@ -216,6 +193,40 @@
 		}
 	}
 	
+	function AnimationHandler(handler, target) {
+		var handler = handler;
+		var target = target;
+		handler.on('load', function(event) {
+			enable();
+		});
+		var init = function() {
+			if ('scrollRestoration' in history) {
+				history.scrollRestoration = 'manual';
+			} else {
+				var	oldScrollPos = 0;
+				var scrollPos = 0;
+				var	$htmlbody = $('html,body');
+
+				$window.on('scroll', function() {
+					oldScrollPos = scrollPos;
+					scrollPos = $htmlbody.scrollTop();
+				}).on('hashchange', function() {
+					$window.scrollTop(oldScrollPos);
+				});
+			}
+			disable();
+		}
+		var enable = function() {
+			setTimeout(function() {
+				target.removeClass('is-loading');
+			}, 50);
+		}
+		var disable = function() {
+			target.addClass('is-loading');
+		}
+		init();
+	}
+
 	var initFlexBox = function() {
 		// Fix: Placeholder polyfill.
 		$('form').placeholder();
