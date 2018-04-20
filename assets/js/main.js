@@ -225,10 +225,10 @@
 		this.routeToInitialView = function() {
 			if (!this.isHome()) {
 				outlet.load();
-				handler.trigger('load');
 			} else {
 				outlet.hideTargetElement();
 			}		
+			handler.trigger('load');
 		}
 		handler.on('hashchange', function(event) {
 			event.preventDefault();
