@@ -197,8 +197,8 @@
 					$window.scrollTop(oldScrollPos);
 				});
 			}
-			
-		// Initial article.
+		
+		// Initial load.
 		if (location.hash != '' &&	location.hash != '#') {
 			$main._load();
 			$window.trigger('load');
