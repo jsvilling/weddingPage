@@ -18,14 +18,14 @@
 		var	$window = $(window);
 		var	$body = $('body');
 		var	$header = $('#header');
-		var	$main = new ViewHandler($body, $header);
+		var	viewHandler = new ViewHandler($body, $header);
 		
 		var animationHandler = new AnimationHandler($window, $body);
 
 		initFlexBox();
 		initNav($header);
 
-		var router = new Router($window, $main);
+		var router = new Router($window, viewHandler);
 		router.routeToInitialView();
 	});
 	
@@ -154,6 +154,33 @@
 		this.hideTargetElement = function() {
 			$main.hide();
 		}
+		var handleLock = function(locked, article) {
+			// Already locked? Speed through "show" steps w/o delays.
+			if (locked || (typeof initial != 'undefined' && initial === true)) {
+				// Mark as switching.
+				$body.addClass('is-switching');
+
+				// Mark as visible.
+				$body.addClass('is-article-visible');
+
+				$header.hide();
+				$footer.hide();
+				
+				$main.show();
+				article.show();
+
+				article.addClass('active');
+
+				locked = false;
+
+				// Unmark as switching.
+				setTimeout(function() {
+					$body.removeClass('is-switching');
+				}, (initial ? 1000 : 0));
+				return locked;
+			}
+			return true;
+		}
 	}
 	
 	function Router(handler, outlet) {
@@ -254,32 +281,6 @@
 		}
 	}
 	
-	var handleLock = function(locked, article) {
-		// Already locked? Speed through "show" steps w/o delays.
-		if (locked || (typeof initial != 'undefined' && initial === true)) {
-			// Mark as switching.
-			$('body').addClass('is-switching');
-
-			// Mark as visible.
-			$('body').addClass('is-article-visible');
-
-			$('#header').hide();
-			$('#footer').hide();
-			
-			$('#main').show();
-			article.show();
-
-			article.addClass('active');
-
-			locked = false;
-
-			// Unmark as switching.
-			setTimeout(function() {
-				$body.removeClass('is-switching');
-			}, (initial ? 1000 : 0));
-			return locked;
-		}
-		return true;
-	}
+	
 	
 })(jQuery);
