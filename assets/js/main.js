@@ -21,6 +21,7 @@
 		var	$header = $('#header');
 		var	$footer = $('#footer');
 		var	$main = $('#main');
+		
 
 		// Disable animations/transitions until the page has loaded.
 		$body.addClass('is-loading');
@@ -156,29 +157,6 @@
 			}, delay);
 		};
 
-		// Events.
-		$body.on('click', function(event) {
-			if ($body.hasClass('is-article-visible')) {
-				$main._hide(true);
-			}
-		});
-		
-		$window.on('keyup', function(event) {
-			if(event.keyCode === 27 && $body.hasClass('is-article-visible')) {
-				$main._hide(true);
-			}
-		});
-
-		$window.on('hashchange', function(event) {
-			event.preventDefault();
-			event.stopPropagation();
-			if (location.hash == '' || location.hash == '#') {
-				$main._hide();
-			} else {
-				$main._load();
-			}
-		});
-
 		// Scroll restoration.
 		// This prevents the page from scrolling back to the top on a hashchange.
 		if ('scrollRestoration' in history) {
@@ -198,14 +176,45 @@
 				});
 			}
 		
-		// Initial load.
-		if (location.hash != '' &&	location.hash != '#') {
-			$main._load();
-			$window.trigger('load');
-		} else {
-			$main.hide();
-		}		
+		var router = new Router($window, $main);
+		router.routeToInitialView();
 	});
+	
+	function Router(handler, outlet) {
+		var handler = handler
+		var outlet = outlet;
+		this.routeToInitialView = function() {
+			if (!isHome()) {
+				outlet._load();
+				handler.trigger('load');
+			} else {
+				outlet.hide();
+			}		
+		}
+		handler.on('hashchange', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			if (isHome()) {
+				outlet._hide();
+			} else {
+				outlet._load();
+			}
+		});
+		// Right place?
+		handler.on('click', function(event) {
+			if (!isHome()) {
+				location.hash = '';
+			}
+		});
+		handler.on('keyup', function(event) {
+			if(event.keyCode === 27 && !isHome()) {
+				location.hash = '';
+			}
+		});
+		var isHome = function() {
+			return location.hash == '' || location.hash == '#';
+		}
+	}
 	
 	var initFlexBox = function() {
 		// Fix: Placeholder polyfill.
