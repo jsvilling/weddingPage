@@ -24,6 +24,7 @@
 		var router = new Router($window, viewHandler);
 		var globalInputHandler = new GlobalInputHandler($window, router);
 		router.routeToInitialView();
+		preloader();
 		$(window).on('beforeunload', function(){
 			$(window).trigger('load');
 			return;
@@ -264,5 +265,16 @@
 				location.hash = '';
 			}
 		});
+	}
+	function preloader() {
+		var img1 = new Image();
+		var img2 = new Image();
+		var img3 = new Image();
+		var img4 = new Image();
+
+		img1.src = "images/us.jpg";
+		img2.src = "images/info.jpg";
+		img3.src = "images/gifts.jpg";
+		img4.src = "images/cookie.jpg";
 	}
 })(jQuery);
