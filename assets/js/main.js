@@ -24,6 +24,10 @@
 		var router = new Router($window, viewHandler);
 		var globalInputHandler = new GlobalInputHandler($window, router);
 		router.routeToInitialView();
+		$(window).on('beforeunload', function(){
+			$(window).trigger('load');
+			return;
+		});
 	});
 	
 	var initFlexBox = function() {
@@ -92,7 +96,7 @@
 						setTimeout(function() {
 							locked = false;
 						}, delay);
-					}, 25);
+					}, delay);
 				}, delay);
 			} else {
 				// Mark as visible.
@@ -111,7 +115,7 @@
 							setTimeout(function() {
 								locked = false;
 							}, delay);
-						}, 25);
+						}, delay);
 					}, delay);
 				}
 				$('<div class="close">Close</div>')
