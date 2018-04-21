@@ -223,6 +223,7 @@
 		var router = this;
 		var handler = handler
 		var outlet = outlet;
+		var initialLoadDone = false;
 		this.isHome = function() {
 			return location.hash == '' || location.hash == '#';
 		}
@@ -232,8 +233,15 @@
 			} else {
 				outlet.hideTargetElement();
 			}		
-			handler.trigger('load');
+			if (!initialLoadDone) {
+				setTimeout(function(){ 
+					handler.trigger('load');
+				}, 500);
+			} 
 		}
+		handler.on('load', function() {
+			initLoadDone = true;
+		});
 		handler.on('hashchange', function(event) {
 			event.preventDefault();
 			event.stopPropagation();
