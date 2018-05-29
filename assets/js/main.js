@@ -24,11 +24,7 @@
         var router = new Router($window, viewHandler);
         var globalInputHandler = new GlobalInputHandler($window, router);
         router.routeToInitialView();
-        preloader();
-        $(window).on('beforeunload', function(){
-            $(window).trigger('load');
-            return;
-        });
+        preloadImages();
     });
 
     var initFlexBox = function($window) {
@@ -253,6 +249,12 @@
                 outlet.load();
             }
         });
+        // This prevents some mobile issues: If the user refreshes the page on an android device
+        // the load event is not triggered which is needed to build the page.
+        handler.on('beforeunload', function(){
+            $(window).trigger('load');
+            return;
+        });
     }
     function GlobalInputHandler($window, router) {
         $window.on('click', function(event) {
@@ -267,7 +269,7 @@
             }
         });
     }
-    function preloader() {
+    function preloadImages() {
         var img1 = new Image();
         var img2 = new Image();
         var img3 = new Image();
